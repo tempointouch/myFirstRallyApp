@@ -1,0 +1,9 @@
+{
+	"predictions": [
+		{ "FeatureID": "F12580", "PredictedEndDate": "1"},
+		{ "FeatureID": "F12581", "PredictedEndDate": "2"},
+		{ "FeatureID": "F12585", "PredictedEndDate": "30"},
+		{ "FeatureID": "F12587", "PredictedEndDate": "40"},
+		{ "FeatureID": "F12588", "PredictedEndDate": "50"}
+	]
+}

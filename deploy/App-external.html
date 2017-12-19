@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Random App Name33335</title>
+
+    <script type="text/javascript" src="https://rally1.rallydev.com/apps/2.1/sdk.js"></script>
+
+    <script type="text/javascript">
+        Rally.onReady(function () {
+                Ext.define("CustomApp",{extend:"Rally.app.App",featuresRecs:null,componentCls:"app",launch:function(){console.log("Launch is triggred"),this._loadFeatures()},_loadFeatures:function(){Ext.create("Rally.data.wsapi.Store",{model:"portfolioitem/feature",context:this.getContext().getDataContext(),autoLoad:!0,listeners:{load:this._onFeaturesLoaded,scope:this},fetch:["FormattedID","Name","Owner","PlannedEndDate"]}),console.log("Load features completed")},_onFeaturesLoaded:function(store,data,success){if(success&&store.getCount()>0){var features=data.reduce(function(returnObj,input){return returnObj.push(input.get("FormattedID")),returnObj},[]);console.log("Features loaded",features),new Ext.data.ArrayStore({storeId:"futureJsonStore",autoLoad:!0,proxy:{type:"ajax",extraParams:{features:features.join()},url:"http://avate01-ews1929:9002/casm-ux/resources/features.json",reader:{type:"json",root:"predictions",idProperty:"FeatureID"}},fields:[{name:"FeatureID",type:"string"},{name:"PredictedEndDate",type:"string"}],listeners:{load:function(store,predictData,success){var keys={};console.log("Keys",predictData),success&&store.getCount()>0&&(keys=predictData.reduce(function(returnObj,input){return console.log(input.get("FeatureID"),input.get("PredictedEndDate")),returnObj[input.get("FeatureID")]=input.get("PredictedEndDate"),returnObj},{}));var records=_.map(data,function(record){return Ext.apply({_xfuture:keys[record.get("FormattedID")]},record.getData())});this.add({xtype:"rallygrid",showPagingToolbar:!1,showRowActionsColumn:!1,editable:!1,store:Ext.create("Rally.data.custom.Store",{data:records}),columnCfgs:[{xtype:"templatecolumn",text:"ID",dataIndex:"FormattedID",flex:1,tpl:Ext.create("Rally.ui.renderer.template.FormattedIDTemplate")},{text:"Name",flex:2,dataIndex:"Name"},{xtype:"templatecolumn",text:"Owner",dataIndex:"Owner",flex:2,tpl:Ext.create("Rally.ui.renderer.template.ObjectTemplate",{fieldName:"Owner"})},{xtype:"templatecolumn",text:"Planned End Date",dataIndex:"PlannedEndDate",flex:2,tpl:Ext.create("Rally.ui.renderer.template.DateTemplate")},{text:"Projected End Date",dataIndex:"_xfuture",flex:2,renderer:function(value){return Ext.Date.format(Ext.Date.parse(value,"time"),"m/d/Y h:i: A T")}}]})},scope:this}})}else console.log("No stores")}});
+
+            Rally.launchApp('CustomApp', {
+                name:"Random App Name33335",
+	            parentRepos:""
+            });
+
+        });
+    </script>
+
+
+    <style type="text/css">
+        
+    </style>
+</head>
+<body>
+</body>
+</html>
